@@ -14,13 +14,13 @@ void execute_command(char *command, char *program_name)
 
 	pid = fork();
 
-	if (fork == -1)
+	if (pid == -1)
 	{
 		perror("fork");
 		return;
 	}
 
-	if (fork == 0)
+	if (pid == 0)
 	{
 		execve(command,args,environ);
 		perror(program_name);
