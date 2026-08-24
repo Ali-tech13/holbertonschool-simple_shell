@@ -3,14 +3,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <string.h>
 
 extern char **environ;
 
 ssize_t read_command(char **line, size_t *size);
-void execute_command(char *command, char *program_name);
+void execute_command(char **args, char *program_name);
 
 #endif

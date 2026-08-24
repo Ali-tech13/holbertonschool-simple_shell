@@ -1,16 +1,13 @@
 #include "shell.h"
+
 /**
  * execute_command - creates a child and executes a command
- * @command: full path of the command to execute
+ * @args: command and its arguments
  * @program_name: name used when printing errors
  */
-void execute_command(char *command, char *program_name)
+void execute_command(char **args, char *program_name)
 {
 	pid_t pid;
-	char *args[2];
-
-	args[0] = command;
-	args[1] = NULL;
 
 	pid = fork();
 
@@ -22,10 +19,11 @@ void execute_command(char *command, char *program_name)
 
 	if (pid == 0)
 	{
-		execve(command,args,environ);
+		execve(args[0], args, environ);
 		perror(program_name);
 		_exit(127);
 	}
 
-	waitpid(pid, NULL, 0);
+	if (waitpid(pid, NULL, 0) == -1)
+		perror("waitpid");
 }

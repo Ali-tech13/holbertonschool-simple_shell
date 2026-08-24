@@ -10,9 +10,11 @@
 int main(int argc, char **argv)
 {
 	char *line;
+	char *token;
+	char **args;
 	size_t size;
+	size_t index;
 	ssize_t chars_read;
-	char *command;
 
 	(void)argc;
 	line = NULL;
@@ -33,10 +35,29 @@ int main(int argc, char **argv)
 				putchar('\n');
 			break;
 		}
-		command = strtok(line, " \t\n");
 
-		if (command != NULL)
-		execute_command(command, argv[0]);
+		args = malloc(sizeof(*args) * (chars_read + 1));
+		if (args == NULL)
+		{
+			perror("malloc");
+			break;
+		}
+
+		index = 0;
+		token = strtok(line, " \t\n");
+
+		while (token != NULL)
+		{
+			args[index] = token;
+			index++;
+			token = strtok(NULL, " \t\n");
+		}
+		args[index] = NULL;
+
+		if (args[0] != NULL)
+			execute_command(args, argv[0]);
+
+		free(args);
 	}
 
 	free(line);
