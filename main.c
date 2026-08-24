@@ -12,6 +12,7 @@ int main(int argc, char **argv)
 	char *line;
 	size_t size;
 	ssize_t chars_read;
+	char *command;
 
 	(void)argc;
 	line = NULL;
@@ -32,9 +33,10 @@ int main(int argc, char **argv)
 				putchar('\n');
 			break;
 		}
+		command = strtok(line, " \t\n");
 
-		if (line[0] != '\0')
-			execute_command(line, argv[0]);
+		if (command != NULL)
+		execute_command(command, argv[0]);
 	}
 
 	free(line);
