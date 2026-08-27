@@ -5,7 +5,7 @@
  * @argc: number of arguments
  * @argv: arguments passed to the program
  *
- * Return: Always 0
+ * Return: status of the last executed command
  */
 int main(int argc, char **argv)
 {
@@ -15,10 +15,14 @@ int main(int argc, char **argv)
 	size_t size;
 	size_t index;
 	ssize_t chars_read;
+	unsigned int command_number;
+	int status;
 
 	(void)argc;
 	line = NULL;
 	size = 0;
+	command_number = 0;
+	status = 0;
 
 	while (1)
 	{
@@ -29,17 +33,23 @@ int main(int argc, char **argv)
 		}
 
 		chars_read = read_command(&line, &size);
+
 		if (chars_read == -1)
 		{
 			if (isatty(STDIN_FILENO))
 				putchar('\n');
+
 			break;
 		}
 
+		command_number++;
+
 		args = malloc(sizeof(*args) * (chars_read + 1));
+
 		if (args == NULL)
 		{
 			perror("malloc");
+			status = 1;
 			break;
 		}
 
@@ -52,14 +62,16 @@ int main(int argc, char **argv)
 			index++;
 			token = strtok(NULL, " \t\n");
 		}
+
 		args[index] = NULL;
 
 		if (args[0] != NULL)
-			execute_command(args, argv[0]);
+			status = execute_command(args, argv[0], command_number);
 
 		free(args);
 	}
 
 	free(line);
-	return (0);
+
+	return (status);
 }

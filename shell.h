@@ -11,6 +11,7 @@
 extern char **environ;
 
 ssize_t read_command(char **line, size_t *size);
-void execute_command(char **args, char *program_name);
-
+char *find_command(char *command);
+int execute_command(char **args, char *program_name,
+		unsigned int command_number);
 #endif
