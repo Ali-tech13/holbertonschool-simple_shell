@@ -1,6 +1,28 @@
 #include "shell.h"
 
 /**
+ * get_path - gets the PATH value from the environment
+ *
+ * Return: pointer to the PATH value, or NULL if not found
+ */
+static char *get_path(void)
+{
+	size_t index;
+
+	index = 0;
+
+	while (environ != NULL && environ[index] != NULL)
+	{
+		if (strncmp(environ[index], "PATH=", 5) == 0)
+			return (environ[index] + 5);
+
+		index++;
+	}
+
+	return (NULL);
+}
+
+/**
  * build_path - joins a directory with a command name
  * @directory: beginning of a directory in PATH
  * @length: number of characters in the directory
@@ -54,7 +76,8 @@ char *find_command(char *command)
 		return (NULL);
 	}
 
-	path = getenv("PATH");
+	path = get_path();
+
 	if (path == NULL)
 		return (NULL);
 
