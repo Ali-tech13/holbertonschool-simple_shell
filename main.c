@@ -70,7 +70,9 @@ int main(int argc, char **argv)
 		if (args[0] != NULL)
 		{
 			if (check_builtin(args, &should_exit))
-				status = 0;
+			{
+					status = 0;
+			}
 			else
 				status = execute_command(args, argv[0], command_number);
 		}
