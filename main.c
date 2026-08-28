@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 		{
 			if (check_builtin(args, &should_exit))
 			{
+				if (should_exit == 0)
 					status = 0;
 			}
 			else
