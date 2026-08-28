@@ -17,12 +17,14 @@ int main(int argc, char **argv)
 	ssize_t chars_read;
 	unsigned int command_number;
 	int status;
+	int should_exit;
 
 	(void)argc;
 	line = NULL;
 	size = 0;
 	command_number = 0;
 	status = 0;
+	should_exit = 0;
 
 	while (1)
 	{
@@ -66,9 +68,17 @@ int main(int argc, char **argv)
 		args[index] = NULL;
 
 		if (args[0] != NULL)
-			status = execute_command(args, argv[0], command_number);
+		{
+			if (check_builtin(args, &should_exit))
+				status = 0;
+			else
+				status = execute_command(args, argv[0], command_number);
+		}
 
 		free(args);
+
+		if (should_exit)
+			break;
 	}
 
 	free(line);

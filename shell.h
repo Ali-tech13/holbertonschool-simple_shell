@@ -14,4 +14,5 @@ ssize_t read_command(char **line, size_t *size);
 char *find_command(char *command);
 int execute_command(char **args, char *program_name,
 		unsigned int command_number);
+int check_builtin(char **args, int *should_exit);
 #endif
